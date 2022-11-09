@@ -19,7 +19,6 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
@@ -50,19 +49,12 @@ app.get('/api/:date?', (req, res) => {
   } 
   else {
     const providedDate = new Date(parseInt(dateString))
-    const utcDate = providedDate.toUTCString()
-    res.json({ "unix": dateString, "utc": utcDate })
+    const utcValue = providedDate.toUTCString()
+    const unixValue = parseInt(dateString)
+    res.json({ unix: unixValue, utc: utcValue })
   }
 })
 
-
-
-// [ORIGINAL] listen for requests :)
-var listener = app.listen(3000, function () {
+var listener = app.listen(process.env.PORT || 3030, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
-
-// [ORIGINAL] listen for requests :)
-// var listener = app.listen(process.env.PORT, function () {
-//   console.log('Your app is listening on port ' + listener.address().port);
-// });
