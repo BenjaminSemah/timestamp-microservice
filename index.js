@@ -38,10 +38,8 @@ app.get('/api/:date?', (req, res) => {
   const userTimestamp = dateStringRegex.test(dateString)
 
   if (!userTimestamp) {
-    const unixTimestamp = 1451001600000 // Date.parse(dateString)
-    console.log("unixTimestamp", unixTimestamp)
+    const unixTimestamp = Date.parse(dateString)
     const providedDate = new Date(unixTimestamp)
-    console.log("firstProvided", providedDate)
     const utcDate = providedDate.toUTCString()
     
     if (unixTimestamp) {
@@ -51,9 +49,7 @@ app.get('/api/:date?', (req, res) => {
     }
   } 
   else {
-    console.log(typeof(dateString))
     const providedDate = new Date(parseInt(dateString))
-    console.log("secondProvided", providedDate)
     const utcDate = providedDate.toUTCString()
     res.json({ "unix": dateString, "utc": utcDate })
   }
