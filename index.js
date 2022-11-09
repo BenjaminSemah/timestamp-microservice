@@ -4,7 +4,6 @@
 // init project
 var express = require('express');
 var app = express();
-const moment = require('moment')
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -33,8 +32,6 @@ app.get('/api', (req, res) => {
   res.json({ unix: currentUnix, utc: currentDate })
 })
 
-
-
 // Handle request with date-string
 app.get('/api/:date?', (req, res) => {
   const providedDate = req.params.date
@@ -44,15 +41,12 @@ app.get('/api/:date?', (req, res) => {
   if (!userTimestamp) {
     const unixTimestamp = Date.parse(providedDate)
     const utcDate = Date(unixTimestamp)
-    // if (unixTimestamp) {
-    //   console.log("Valid Date")
-    // } else {
-    //   console.log("Invalid Date")
-    // }
-
-    unixTimestamp
-    ? res.json({ "unix": unixTimestamp, "utc": utcDate })
-    : res.json({ error: "Invalid Date" })
+    
+    if (unixTimestamp) {
+      res.json({ "unix": unixTimestamp, "utc": utcDate })
+    } else {
+      res.json({ error: "Invalid Date" })
+    }
   } 
   else {
     const utcDate = Date(providedDate)
