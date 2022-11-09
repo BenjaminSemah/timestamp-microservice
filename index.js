@@ -26,20 +26,23 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api', (req, res) => {
-  const currentDate = Date()
+  const currentDate = new Date().toUTCString()
   const currentUnix = Date.parse(currentDate)
   res.json({ unix: currentUnix, utc: currentDate })
 })
 
 // Handle request with date-string
 app.get('/api/:date?', (req, res) => {
-  const providedDate = req.params.date
-  const providedDateRegex = /^[0-9]+$/
-  const userTimestamp = providedDateRegex.test(providedDate)
+  const dateString = req.params.date
+  const dateStringRegex = /^[0-9]+$/
+  const userTimestamp = dateStringRegex.test(dateString)
 
   if (!userTimestamp) {
-    const unixTimestamp = Date.parse(providedDate)
-    const utcDate = Date(unixTimestamp)
+    const unixTimestamp = 1451001600000 // Date.parse(dateString)
+    console.log("unixTimestamp", unixTimestamp)
+    const providedDate = new Date(unixTimestamp)
+    console.log("firstProvided", providedDate)
+    const utcDate = providedDate.toUTCString()
     
     if (unixTimestamp) {
       res.json({ "unix": unixTimestamp, "utc": utcDate })
@@ -48,8 +51,11 @@ app.get('/api/:date?', (req, res) => {
     }
   } 
   else {
-    const utcDate = Date(providedDate)
-    res.json({ "unix": providedDate, "utc": utcDate })
+    console.log(typeof(dateString))
+    const providedDate = new Date(parseInt(dateString))
+    console.log("secondProvided", providedDate)
+    const utcDate = providedDate.toUTCString()
+    res.json({ "unix": dateString, "utc": utcDate })
   }
 })
 
