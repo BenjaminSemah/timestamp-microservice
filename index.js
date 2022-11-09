@@ -28,7 +28,6 @@ app.get("/api/hello", function (req, res) {
 app.get('/api', (req, res) => {
   const currentDate = Date()
   const currentUnix = Date.parse(currentDate)
-  console.log(currentUnix, currentDate)
   res.json({ unix: currentUnix, utc: currentDate })
 })
 
