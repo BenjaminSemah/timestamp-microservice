@@ -26,15 +26,38 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get('/api', (req, res) => {
+  const currentDate = Date()
+  const currentUnix = Date.parse(currentDate)
+  console.log(currentUnix, currentDate)
+  res.json({ unix: currentUnix, utc: currentDate })
+})
+
+
+
+// Handle request with date-string
 app.get('/api/:date?', (req, res) => {
   const providedDate = req.params.date
-  const unixTimestamp = Date.parse(providedDate)
-  // const utcDate = moment.unix(unixTimestamp).utc()
-  const utcDate = Date(unixTimestamp)
+  const providedDateRegex = /^[0-9]+$/
+  const userTimestamp = providedDateRegex.test(providedDate)
 
-  console.log("unix", unixTimestamp, typeof(unixTimestamp))
-  console.log("utc", utcDate)
-  res.end()
+  if (!userTimestamp) {
+    const unixTimestamp = Date.parse(providedDate)
+    const utcDate = Date(unixTimestamp)
+    // if (unixTimestamp) {
+    //   console.log("Valid Date")
+    // } else {
+    //   console.log("Invalid Date")
+    // }
+
+    unixTimestamp
+    ? res.json({ "unix": unixTimestamp, "utc": utcDate })
+    : res.json({ error: "Invalid Date" })
+  } 
+  else {
+    const utcDate = Date(providedDate)
+    res.json({ "unix": providedDate, "utc": utcDate })
+  }
 })
 
 
